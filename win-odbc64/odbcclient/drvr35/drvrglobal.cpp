@@ -847,18 +847,12 @@ char* rSup( char* string )
 */
 bool double_to_char(double number, int precision, char* string, short size)
 {
-    char format[8] = { '\0' };
+    // sign(1) + integer(1) + point(1) + fraction(DBL_DECIMAL_DIG) + e(1) + sign(1) + exp(3) + '\0' + align(2)
+    char buf[DBL_DECIMAL_DIG + 11] = { '\0' };
     size_t actualLen = 0;
 
-    // make sure any precision of possible double value can be format to the buf.
-    char buf[MAX_DOUBLE_TO_CHAR_LEN] = { '\0' };
-
-    // precission should be limit to a reasonable range.
-    if ((precision < 0) || (precision > DBL_DIG))
-        return false;
-
-    if ((sprintf(format, "%%.%dlg", (precision > FLT_DIG) ? (precision + 2) : (precision + 3)) < 0) ||
-        ((actualLen = sprintf(buf, format, number)) < 0) ||
+    if ((precision < 0) || (precision > DBL_DECIMAL_DIG) ||  // precission should be limit to a reasonable range.
+        ((actualLen = sprintf(buf, "%.*lg", precision, number)) < 0) ||
         (actualLen > size)) {
         return false;
     }

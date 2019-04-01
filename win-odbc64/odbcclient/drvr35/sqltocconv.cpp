@@ -651,7 +651,7 @@ unsigned long ODBC::ConvertSQLToC(CConnect *m_ConnectHandle,
 							dTmp)  != SQL_SUCCESS)
 					return IDS_07_006;
 //				_gcvt(dTmp, DBL_DIG, cTmpBuf);
-				if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+				if (!double_to_char (dTmp, DBL_DIG + 1, cTmpBuf, sizeof(cTmpBuf)))
 					return IDS_22_001;
 			
 			}
@@ -666,7 +666,7 @@ unsigned long ODBC::ConvertSQLToC(CConnect *m_ConnectHandle,
 				else {
 					dTmp = *(double *)srcDataPtr;
 //					_gcvt(dTmp, DBL_DIG, cTmpBuf);
-					if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+					if (!double_to_char (dTmp, DBL_DIG + 1, cTmpBuf, sizeof(cTmpBuf)))
 						return IDS_22_001;
 				}
 			}
@@ -1003,7 +1003,7 @@ unsigned long ODBC::ConvertSQLToC(CConnect *m_ConnectHandle,
 							dTmp)  != SQL_SUCCESS)
 					return IDS_07_006;
 //				_gcvt(dTmp, DBL_DIG, cTmpBuf);
-				if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+				if (!double_to_char (dTmp, DBL_DIG + 1, cTmpBuf, sizeof(cTmpBuf)))
 					return IDS_22_001;
 			
 			}
@@ -1018,7 +1018,7 @@ unsigned long ODBC::ConvertSQLToC(CConnect *m_ConnectHandle,
 				else {
 					dTmp = *(double *)srcDataPtr;
 //					_gcvt(dTmp, DBL_DIG, cTmpBuf);
-                    if (!double_to_char(dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+                    if (!double_to_char(dTmp, DBL_DIG + 1, cTmpBuf, sizeof(cTmpBuf)))
 						return IDS_22_001;
 				}
 			}

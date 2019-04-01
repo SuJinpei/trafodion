@@ -518,13 +518,13 @@ unsigned long ODBC::ConvertCToSQL(SQLINTEGER	ODBCAppVersion,
 		case SQL_C_FLOAT:
 			dTmp = *(float *)srcDataPtr;
 //			_gcvt(dTmp, FLT_DIG, cTmpBuf);
-			if (!double_to_char (dTmp, FLT_DIG, cTmpBuf, sizeof(cTmpBuf)))
+			if (!double_to_char (dTmp, FLT_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 				return IDS_22_001;
 			break;
 		case SQL_C_DOUBLE:
 			dTmp = *(double *)srcDataPtr;
 //			_gcvt(dTmp, DBL_DIG, cTmpBuf);
-			if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+			if (!double_to_char (dTmp, DBL_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 				return IDS_22_001;
 			break;
 		case SQL_C_DATE:
@@ -1627,12 +1627,12 @@ unsigned long ODBC::ConvertCToSQL(SQLINTEGER	ODBCAppVersion,
 
 				if(CDataType == SQL_C_DOUBLE)
 				{
-					if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+					if (!double_to_char (dTmp, DBL_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 						dataTruncatedWarning = TRUE;
 				}
 				else
 				{
-					if (!double_to_char (dTmp, FLT_DIG, cTmpBuf, sizeof(cTmpBuf)))
+					if (!double_to_char (dTmp, FLT_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 						dataTruncatedWarning = TRUE;
 				}
 
@@ -2522,12 +2522,12 @@ unsigned long ODBC::ConvertCToSQL(SQLINTEGER	ODBCAppVersion,
 			break;
 		case SQL_C_FLOAT:
 			dTmp = *(float *)srcDataPtr;
-			if (!double_to_char (dTmp, FLT_DIG, cTmpBuf, sizeof(cTmpBuf)))
+			if (!double_to_char (dTmp, FLT_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 				return IDS_22_001;
 			break;
 		case SQL_C_DOUBLE:
 			dTmp = *(double *)srcDataPtr;
-			if (!double_to_char (dTmp, DBL_DIG, cTmpBuf, sizeof(cTmpBuf)))
+			if (!double_to_char (dTmp, DBL_DECIMAL_DIG, cTmpBuf, sizeof(cTmpBuf)))
 				return IDS_22_001;
 			break;
 		case SQL_C_NUMERIC:
