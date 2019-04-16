@@ -446,7 +446,7 @@ struct execute {
         0002 = WITH NO ROLLBACK                 020000 = print timeline           0200000000 = xml dump
         0004 = quiet (no timing)                040000 = custom SQL extract/copy  0400000000 = user defined iobuff
         0010 = diff "quick" mode                100000 = sql from file. free .sql 1000000000 = use libMapRClient.so instead of libhdfs
-        0020 = load "show" mode                 200000 = force cdef binding       2000000000 = NOT USED
+        0020 = load "show" mode                 200000 = force cdef binding       2000000000 = load empty string as empty string(default as null).
         0040 = copy: cols to be excluded        400000 = NOT USED                 4000000000 = NOT USED
         0100 = src or tgt HDFS                 1000000 = diff:odad (Or dt As dt) 10000000000 = NOT USED
         0200 = flag used to print header line  2000000 = xml attr/text set/unset 20000000000 = NOT USED
@@ -7597,7 +7597,11 @@ static void Oload(int eid)
                         if ( ifl > 0 ) {
                             MEMCPY(Odp, str, ifl);
                         } else if ( ifl == 0 ) {
-                            ifl = SQL_NULL_DATA ;
+                            if (etab[eid].flg2 & 02000000000) {
+                                ifl = 0;
+                            } else {
+                                ifl = SQL_NULL_DATA;
+                            }
                         } else if ( ifl == EMPTY ) {
                             ifl = 0 ;
                         }
@@ -8530,7 +8534,11 @@ static void Oload2(int eid)
                     *((SQLLEN *)(Odp)) = (SQLLEN)rl ;
                 } else {
                     Odp += etab[eid].td[k].Osize + etab[eid].td[k].pad - rl ;
-                    *((SQLLEN *)(Odp)) = (SQLLEN)SQL_NULL_DATA ;
+                    if (etab[eid].flg2 & 02000000000) {
+                        *((SQLLEN *)(Odp)) = 0;
+                    } else {
+                        *((SQLLEN *)(Odp)) = (SQLLEN)SQL_NULL_DATA;
+                    }
                 }
                 rl = 0 ;
                 Odp += sizeof(SQLLEN) ;
@@ -14405,6 +14413,8 @@ static int Otcol(int eid, SQLHDBC *Ocn)
                 } else if (type == 'l' && !strcmp(&str[n], "jsonkey")) {
                     fprintf(stderr, "odb [parseopt(%d)] - Warning: this function is not fully tested \"%s\"\n", __LINE__, &str[n]);
                     etab[no].jsonKey = &str[n];
+                } else if (type == 'l' && !strcmp(&str[n], "emptyasempty")) {
+                    etab[no].flg2 |= 02000000000;
                 }
                 else {
                     fprintf(stderr, "odb [parseopt(%d)] - Error: unknown parameter \"%s\"\n",
